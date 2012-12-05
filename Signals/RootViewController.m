@@ -7,11 +7,12 @@
 //
 
 #import "RootViewController.h"
+#import "SignalView.h"
 
-@interface RootViewController ()
+@interface RootViewController () <UITextViewDelegate>
 
-@property (nonatomic, weak) IBOutlet UIView *signalView;
-@property (nonatomic, weak) IBOutlet UIView *textView;
+@property (nonatomic, weak) IBOutlet SignalView *signalView;
+@property (nonatomic, weak) IBOutlet UITextField *textView;
 
 @end
 
@@ -21,7 +22,8 @@
 {
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
-        // Custom initialization
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(keyboardUpdated) name:UIKeyboardDidChangeFrameNotification object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(textFieldUpdated) name:UITextFieldTextDidChangeNotification object:nil];
     }
     return self;
 }
@@ -29,13 +31,29 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    // Do any additional setup after loading the view from its nib.
+    self.textView.delegate = (id)self;
 }
 
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+- (void)textFieldUpdated
+{
+    [self.signalView setText:self.textView.text];
+}
+
+- (void)keyboardUpdated
+{
+    [self.view updateConstraintsIfNeeded];
+}
+
+- (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text
+{
+    [self textFieldUpdated];
+    return YES;
 }
 
 @end
