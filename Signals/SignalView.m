@@ -22,6 +22,7 @@
     self = [super initWithFrame:frame];
     if (self) {
         self.paths = [NSMutableArray array];
+        self.contentMode = UIViewContentModeRedraw;
     }
     return self;
 }

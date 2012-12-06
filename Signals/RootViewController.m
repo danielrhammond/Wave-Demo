@@ -34,10 +34,11 @@
     self.textView.delegate = (id)self;
 }
 
-- (void)didReceiveMemoryWarning
+- (void)viewDidAppear:(BOOL)animated
 {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+    self.textView.text = @"Change me to watch the waveform above regenerate";
+    [self.textView becomeFirstResponder];
+    [self textFieldUpdated];
 }
 
 - (void)textFieldUpdated
